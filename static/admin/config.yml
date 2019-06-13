@@ -20,6 +20,26 @@ collections:
       - {label: "Featured Image", name: "featuredimage", widget: image}
       - {label: "Body", name: "body", widget: "markdown"}
       - {label: "Tags", name: "tags", widget: "list"}
+  
+  - name: "procedure"
+    label: "Procedure"
+    folder: "src/pages/procedures"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "procedure"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "Steps", name: "steps", widget: "list", fields: [
+          {label: "Title", name: "title", widget: "text"},
+          {label: "Image", name: "image", widget: "image", required: false,},
+          {label: "Description", name: "description", widget: "text"},
+          {label: Higlights, name: highlights, widget: list, required: false, fields: [
+            {label: HighlightText, name: highlighttext, widget: text},
+            {label: ShapeType, name: shapetype, widget: text},
+            {label: Coords, name: coords, widget: text}
+          ]}]}
 
   - name: "pages"
     label: "Pages"
