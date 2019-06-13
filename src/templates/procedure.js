@@ -42,7 +42,7 @@ export const ProcedureTemplate = ({
 }) => {
     const PostContent = contentComponent || Content
     return (
-        <section className="section">
+        <section className="section procedure-section">
             {helmet || ''}
             <div className="container content">
                 <div className="columns">
@@ -71,6 +71,7 @@ export const ProcedureTemplate = ({
                                                 <ContainerDimensions>
                                                     {({ width }) =>
                                                         <ImageMapper
+                                                            onImageClick={(event) => event.preventDefault()}
                                                             width={width - 10}
                                                             imgWidth={MAX_IMAGE_WIDTH}
                                                             src={step.image.childImageSharp.fluid.src}
@@ -89,7 +90,14 @@ export const ProcedureTemplate = ({
                     </div>
                 </div>
             </div>
+            {/* Hack to ensure that the image can't be dragged out, and doesn't influence swiping on desktop  */}
+            <style>{`
+            .procedure-section img {
+                pointer-events:none;
+            }
+        `}</style>
         </section>
+        
     )
 }
 
