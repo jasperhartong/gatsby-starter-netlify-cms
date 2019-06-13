@@ -9,119 +9,119 @@ import ImageMapper from 'react-image-mapper';
 
 const styles = {
     root: {
-      padding: '0 30px',
+        padding: '0 30px',
     },
     slideContainer: {
-      padding: '0 10px',
+        padding: '0 10px',
     },
     slide: {
-      padding: 15,
-      minHeight: '60vh',
-      color: '#fff',
+        padding: 15,
+        minHeight: '60vh',
+        color: '#fff',
     },
     slide1: {
-      backgroundColor: '#FEA900',
+        backgroundColor: '#FEA900',
     },
     slide2: {
-      backgroundColor: '#B3DC4A',
+        backgroundColor: '#B3DC4A',
     },
     slide3: {
-      backgroundColor: '#6AC0FF',
+        backgroundColor: '#6AC0FF',
     },
-  };
+};
 
 export const ProcedureTemplate = ({
-  content,
-  contentComponent,
-  description,
-  steps,
-  title,
-  helmet,
+    content,
+    contentComponent,
+    description,
+    steps,
+    title,
+    helmet,
 }) => {
-  const PostContent = contentComponent || Content
+    const PostContent = contentComponent || Content
 
-  return (
-    <section className="section">
-      {helmet || ''}
-      <div className="container content">
-        <div className="columns">
-          <div className="column is-10 is-offset-1">
-            <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
-              {title}
-            </h1>
-            <p>{description}</p>
-            <PostContent content={content} />
-            {steps && steps.length ? (
-              <div style={{ marginTop: `4rem` }}>
-                <h4>Steps</h4>
-                <SwipeableViews enableMouseEvents={true} style={styles.root} slideStyle={styles.slideContainer}>
-                    {steps.map((step, stepIndex) => (
-                        <div
-                            key={step.title}
-                            style={{...styles.slide, ...styles.slide1 }}
-                            className="">
-                            <h2>
-                                {step.title}
-                            </h2>
-                            <p>
-                                {step.description}
-                            </p>
-                            <ImageMapper
-                                width={300}
-                                src={step.image.childImageSharp.fluid.src}
-                                map={{
-                                    name: "area-map"+stepIndex,
-                                    areas: step.highlights.map((h,i)=> ({name: `${i}`, shape: h.shapetype, coords: h.coords.split(','), preFillColor: "rgba(0,0,0,0.3)", fillColor: "rgba(0,0,0,0.6)"})),
-                                    }}/>
-                        </div>
-                    ))}
-                </SwipeableViews>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
+    return (
+        <section className="section">
+            {helmet || ''}
+            <div className="container content">
+                <div className="columns">
+                    <div className="column is-10 is-offset-1">
+                        <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
+                            {title}
+                        </h1>
+                        <p>{description}</p>
+                        <PostContent content={content} />
+                        {steps && steps.length ? (
+                            <div style={{ marginTop: `4rem` }}>
+                                <h4>Steps</h4>
+                                <SwipeableViews enableMouseEvents={true} style={styles.root} slideStyle={styles.slideContainer}>
+                                    {steps.map((step, stepIndex) => (
+                                        <div
+                                            key={step.title}
+                                            style={{ ...styles.slide, ...styles.slide1 }}
+                                            className="">
+                                            <h2>
+                                                {step.title}
+                                            </h2>
+                                            <p>
+                                                {step.description}
+                                            </p>
+                                            <ImageMapper
+                                                width={300}
+                                                src={step.image.childImageSharp.fluid.src}
+                                                map={{
+                                                    name: "area-map" + stepIndex,
+                                                    areas: step.highlights.map((h, i) => ({ name: `${i}`, shape: h.shapetype, coords: h.coords.split(','), preFillColor: "rgba(0,0,0,0.3)", fillColor: "rgba(0,0,0,0.6)" })),
+                                                }} />
+                                        </div>
+                                    ))}
+                                </SwipeableViews>
+                            </div>
+                        ) : null}
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
 }
 
 ProcedureTemplate.propTypes = {
-  content: PropTypes.node.isRequired,
-  contentComponent: PropTypes.func,
-  description: PropTypes.string,
-  title: PropTypes.string,
-  helmet: PropTypes.object,
+    content: PropTypes.node.isRequired,
+    contentComponent: PropTypes.func,
+    description: PropTypes.string,
+    title: PropTypes.string,
+    helmet: PropTypes.object,
 }
 
 const Procedure = ({ data }) => {
-  const { markdownRemark: post } = data
+    const { markdownRemark: post } = data
 
-  return (
-    <Layout>
-      <ProcedureTemplate
-        content={post.html}
-        contentComponent={HTMLContent}
-        description={post.frontmatter.description}
-        helmet={
-          <Helmet titleTemplate="%s | Blog">
-            <title>{`${post.frontmatter.title}`}</title>
-            <meta
-              name="description"
-              content={`${post.frontmatter.description}`}
+    return (
+        <Layout>
+            <ProcedureTemplate
+                content={post.html}
+                contentComponent={HTMLContent}
+                description={post.frontmatter.description}
+                helmet={
+                    <Helmet titleTemplate="%s | Blog">
+                        <title>{`${post.frontmatter.title}`}</title>
+                        <meta
+                            name="description"
+                            content={`${post.frontmatter.description}`}
+                        />
+                    </Helmet>
+                }
+                steps={post.frontmatter.steps}
+                title={post.frontmatter.title}
             />
-          </Helmet>
-        }
-        steps={post.frontmatter.steps}
-        title={post.frontmatter.title}
-      />
-    </Layout>
-  )
+        </Layout>
+    )
 }
 
 Procedure.propTypes = {
-  data: PropTypes.shape({
-    markdownRemark: PropTypes.object,
-  }),
+    data: PropTypes.shape({
+        markdownRemark: PropTypes.object,
+    }),
 }
 
 export default Procedure
