@@ -30,6 +30,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-helmet": "^5.2.0",
+    "react-image-mapper": "^0.0.14",
     "react-swipeable-views": "^0.13.3",
     "uuid": "^3.2.1"
   },

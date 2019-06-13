@@ -5,6 +5,7 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import Content, { HTMLContent } from '../components/Content'
 import SwipeableViews from 'react-swipeable-views';
+import ImageMapper from 'react-image-mapper';
 
 const styles = {
     root: {
@@ -54,7 +55,7 @@ export const ProcedureTemplate = ({
               <div style={{ marginTop: `4rem` }}>
                 <h4>Steps</h4>
                 <SwipeableViews enableMouseEvents={true} style={styles.root} slideStyle={styles.slideContainer}>
-                    {steps.map(step => (
+                    {steps.map((step, stepIndex) => (
                         <div
                             key={step.title}
                             style={{...styles.slide, ...styles.slide1 }}
@@ -65,12 +66,13 @@ export const ProcedureTemplate = ({
                             <p>
                                 {step.description}
                             </p>
-                            <img src={step.image.childImageSharp.fluid.src}/>
-                            {step.highlights.map(h=> (
-                                <p key={h.highlighttext}>
-                                    {h.shape}: {h.coords}
-                                </p>
-                                ))}
+                            <ImageMapper
+                                width={300}
+                                src={step.image.childImageSharp.fluid.src}
+                                map={{
+                                    name: "area-map"+stepIndex,
+                                    areas: step.highlights.map((h,i)=> ({name: `${i}`, shape: h.shapetype, coords: h.coords.split(','), preFillColor: "rgba(0,0,0,0.3)", fillColor: "rgba(0,0,0,0.6)"})),
+                                    }}/>
                         </div>
                     ))}
                 </SwipeableViews>
