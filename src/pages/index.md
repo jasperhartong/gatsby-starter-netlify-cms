@@ -1,8 +1,8 @@
 ---
 templateKey: index-page
-title: Great coffee with a conscience
+title: Procedures!
 image: /img/home-jumbotron.jpg
-heading: Procedures
+heading: Procedures?
 subheading: Open source!
 mainpitch:
   title: Why Kaldi
