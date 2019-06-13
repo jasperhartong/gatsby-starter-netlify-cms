@@ -75,6 +75,9 @@ export const ProcedureTemplate = ({
                                                             width={width - 10}
                                                             imgWidth={MAX_IMAGE_WIDTH}
                                                             src={step.image.childImageSharp.fluid.src}
+                                                            onClick={(area, index, event) => {
+                                                                alert(`Now we should show a nice window with extra info: ${step.highlights[index].highlighttext}`);
+                                                            }}
                                                             map={{
                                                                 name: "area-map" + stepIndex,
                                                                 areas: step.highlights.map((h, i) => ({ name: `${i}`, shape: h.shapetype, coords: h.coords.split(','), preFillColor: "rgba(0,0,0,0.3)", fillColor: "rgba(0,0,0,0.6)" })),
