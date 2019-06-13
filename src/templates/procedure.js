@@ -93,7 +93,13 @@ export const ProcedureTemplate = ({
             {/* Hack to ensure that the image can't be dragged out, and doesn't influence swiping on desktop  */}
             <style>{`
             .procedure-section img {
-                pointer-events:none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                -webkit-user-drag: none;
+                user-drag: none;
+                -webkit-touch-callout: none;
             }
         `}</style>
         </section>
