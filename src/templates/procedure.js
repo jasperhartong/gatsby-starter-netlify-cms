@@ -6,7 +6,9 @@ import Layout from '../components/Layout'
 import Content, { HTMLContent } from '../components/Content'
 import SwipeableViews from 'react-swipeable-views';
 import ImageMapper from 'react-image-mapper';
+import ContainerDimensions from 'react-container-dimensions';
 
+const MAX_IMAGE_WIDTH = 300;  // Note.. also update value in pageQuery when changing!
 const styles = {
     root: {
         padding: '0 30px',
@@ -39,7 +41,6 @@ export const ProcedureTemplate = ({
     helmet,
 }) => {
     const PostContent = contentComponent || Content
-
     return (
         <section className="section">
             {helmet || ''}
@@ -66,13 +67,20 @@ export const ProcedureTemplate = ({
                                             <p>
                                                 {step.description}
                                             </p>
-                                            <ImageMapper
-                                                width={300}
-                                                src={step.image.childImageSharp.fluid.src}
-                                                map={{
-                                                    name: "area-map" + stepIndex,
-                                                    areas: step.highlights.map((h, i) => ({ name: `${i}`, shape: h.shapetype, coords: h.coords.split(','), preFillColor: "rgba(0,0,0,0.3)", fillColor: "rgba(0,0,0,0.6)" })),
-                                                }} />
+                                            <div className="requiredWrapperForSwipingToWork">
+                                                <ContainerDimensions>
+                                                    {({ width }) =>
+                                                        <ImageMapper
+                                                            width={width - 10}
+                                                            imgWidth={MAX_IMAGE_WIDTH}
+                                                            src={step.image.childImageSharp.fluid.src}
+                                                            map={{
+                                                                name: "area-map" + stepIndex,
+                                                                areas: step.highlights.map((h, i) => ({ name: `${i}`, shape: h.shapetype, coords: h.coords.split(','), preFillColor: "rgba(0,0,0,0.3)", fillColor: "rgba(0,0,0,0.6)" })),
+                                                            }} />
+                                                    }
+                                                </ContainerDimensions>
+                                            </div>
                                         </div>
                                     ))}
                                 </SwipeableViews>
@@ -139,7 +147,7 @@ export const pageQuery = graphql`
             description
             image {
                 childImageSharp {
-                    fluid(maxWidth: 240, quality: 64) {
+                    fluid(maxWidth: 300, quality: 64) {
                       ...GatsbyImageSharpFluid
                     }
                 }
