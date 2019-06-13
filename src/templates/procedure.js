@@ -32,6 +32,16 @@ const styles = {
     },
 };
 
+const flattenImage = (image) => {
+    if (image && image.childImageSharp) {
+        // Is based on the graphql pageQuery
+        return image.childImageSharp.fluid.src
+    }
+    // Is based on the ProcedurePreview
+    // TODO: In preview you want to have the same pixels width so the highlights work
+    return image
+}
+
 export const ProcedureTemplate = ({
     content,
     contentComponent,
@@ -74,13 +84,19 @@ export const ProcedureTemplate = ({
                                                             onImageClick={(event) => event.preventDefault()}
                                                             width={width - 10}
                                                             imgWidth={MAX_IMAGE_WIDTH}
-                                                            src={step.image.childImageSharp.fluid.src}
+                                                            src={flattenImage(step.image)}
                                                             onClick={(area, index, event) => {
                                                                 alert(`Now we should show a nice window with extra info: ${step.highlights[index].highlighttext}`);
                                                             }}
                                                             map={{
                                                                 name: "area-map" + stepIndex,
-                                                                areas: step.highlights.map((h, i) => ({ name: `${i}`, shape: h.shapetype, coords: h.coords.split(','), preFillColor: "rgba(0,0,0,0.3)", fillColor: "rgba(0,0,0,0.6)" })),
+                                                                areas: !!step.highlights ? step.highlights.map((h, i) => ({
+                                                                    name: `${i}`,
+                                                                    shape: !!h.shapetype ? h.shapetype : 'rect',
+                                                                    coords: !!h.coords ? h.coords.split(',') : [0,0,0,0],
+                                                                    preFillColor: "rgba(0,0,0,0.3)",
+                                                                    fillColor: "rgba(0,0,0,0.6)" }))
+                                                                    : [], // empty when no highlights
                                                             }} />
                                                     }
                                                 </ContainerDimensions>
