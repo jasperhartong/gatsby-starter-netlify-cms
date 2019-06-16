@@ -12,25 +12,16 @@ const MAX_IMAGE_WIDTH = 300;  // Note.. also update value in pageQuery when chan
 const styles = {
     slideRoot: {
         padding: '0 15px',
-        height: '50vh',
-        maxWidth: '50vh'
+        
+        width: '100%',
+        maxWidth: '60vh'
     },
     slideContainer: {
         padding: '0 5px',
     },
     slide: {
         padding: 15,
-        minHeight: '50vh',
-        color: '#fff',
-    },
-    slide1: {
-        backgroundColor: '#FEA900',
-    },
-    slide2: {
-        backgroundColor: '#B3DC4A',
-    },
-    slide3: {
-        backgroundColor: '#6AC0FF',
+        background: 'linear-gradient(to bottom, rgba(222,222,222,1) 0%,rgba(255,255,255,0) 250px)'
     },
 };
 
@@ -50,7 +41,7 @@ export const ProcedureStepTemplate = ({
 }) => {
     return (
         <div
-            style={{ ...styles.slide, ...styles.slide1 }}
+            style={{ ...styles.slide }}
             className="">
             <div className="requiredWrapperForSwipingToWork">
                 <ContainerDimensions>
