@@ -10,15 +10,17 @@ import ContainerDimensions from 'react-container-dimensions';
 
 const MAX_IMAGE_WIDTH = 300;  // Note.. also update value in pageQuery when changing!
 const styles = {
-    root: {
-        padding: '0 30px',
+    slideRoot: {
+        padding: '0 15px',
+        height: '50vh',
+        maxWidth: '50vh'
     },
     slideContainer: {
-        padding: '0 10px',
+        padding: '0 5px',
     },
     slide: {
         padding: 15,
-        minHeight: '60vh',
+        minHeight: '50vh',
         color: '#fff',
     },
     slide1: {
@@ -42,6 +44,49 @@ const flattenImage = (image) => {
     return image
 }
 
+export const ProcedureStepTemplate = ({
+    step,
+    stepIndex
+}) => {
+    return (
+        <div
+            style={{ ...styles.slide, ...styles.slide1 }}
+            className="">
+            <div className="requiredWrapperForSwipingToWork">
+                <ContainerDimensions>
+                    {({ width }) =>
+                        <ImageMapper
+                            onImageClick={(event) => event.preventDefault()}
+                            width={width - 10}
+                            imgWidth={MAX_IMAGE_WIDTH}
+                            src={flattenImage(step.image)}
+                            onClick={(area, index, event) => {
+                                alert(`Now we should show a nice window with extra info: ${step.highlights[index].highlighttext}`);
+                            }}
+                            map={{
+                                name: "area-map" + stepIndex,
+                                areas: !!step.highlights ? step.highlights.map((h, i) => ({
+                                    name: `${i}`,
+                                    shape: !!h.shapetype ? h.shapetype : 'rect',
+                                    coords: !!h.coords ? h.coords.split(',') : [0, 0, 0, 0],
+                                    preFillColor: "rgba(0,0,0,0.3)",
+                                    fillColor: "rgba(0,0,0,0.6)"
+                                }))
+                                    : [], // empty when no highlights
+                            }} />
+                    }
+                </ContainerDimensions>
+            </div>
+            <h2>
+                {step.title}
+            </h2>
+            <p>
+                {step.description}
+            </p>
+        </div>
+    )
+}
+
 export const ProcedureTemplate = ({
     content,
     contentComponent,
@@ -52,59 +97,26 @@ export const ProcedureTemplate = ({
 }) => {
     const PostContent = contentComponent || Content
     return (
-        <section className="section procedure-section">
+        <section className="procedure-section">
             {helmet || ''}
             <div className="container content">
                 <div className="columns">
                     <div className="column is-10 is-offset-1">
-                        <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
-                            {title}
-                        </h1>
-                        <p>{description}</p>
-                        <PostContent content={content} />
+                        <div style={{margin:15}}>
+                            <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
+                                {title}
+                            </h1>
+                            <p>{description}</p>
+                            <PostContent content={content} />
+                        </div>
                         {steps && steps.length ? (
-                            <div style={{ marginTop: `4rem` }}>
-                                <h4>Steps</h4>
-                                <SwipeableViews enableMouseEvents={true} style={styles.root} slideStyle={styles.slideContainer}>
-                                    {steps.map((step, stepIndex) => (
-                                        <div
-                                            key={step.title}
-                                            style={{ ...styles.slide, ...styles.slide1 }}
-                                            className="">
-                                            <h2>
-                                                {step.title}
-                                            </h2>
-                                            <p>
-                                                {step.description}
-                                            </p>
-                                            <div className="requiredWrapperForSwipingToWork">
-                                                <ContainerDimensions>
-                                                    {({ width }) =>
-                                                        <ImageMapper
-                                                            onImageClick={(event) => event.preventDefault()}
-                                                            width={width - 10}
-                                                            imgWidth={MAX_IMAGE_WIDTH}
-                                                            src={flattenImage(step.image)}
-                                                            onClick={(area, index, event) => {
-                                                                alert(`Now we should show a nice window with extra info: ${step.highlights[index].highlighttext}`);
-                                                            }}
-                                                            map={{
-                                                                name: "area-map" + stepIndex,
-                                                                areas: !!step.highlights ? step.highlights.map((h, i) => ({
-                                                                    name: `${i}`,
-                                                                    shape: !!h.shapetype ? h.shapetype : 'rect',
-                                                                    coords: !!h.coords ? h.coords.split(',') : [0,0,0,0],
-                                                                    preFillColor: "rgba(0,0,0,0.3)",
-                                                                    fillColor: "rgba(0,0,0,0.6)" }))
-                                                                    : [], // empty when no highlights
-                                                            }} />
-                                                    }
-                                                </ContainerDimensions>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </SwipeableViews>
-                            </div>
+                            <SwipeableViews enableMouseEvents={true} style={styles.slideRoot} slideStyle={styles.slideContainer}>
+                                {steps.map((step, stepIndex) => (
+                                    <div key={stepIndex}>
+                                        <ProcedureStepTemplate step={step} stepIndex={stepIndex} />
+                                    </div>
+                                ))}
+                            </SwipeableViews>
                         ) : null}
                     </div>
                 </div>
@@ -122,7 +134,7 @@ export const ProcedureTemplate = ({
             }
         `}</style>
         </section>
-        
+
     )
 }
 
