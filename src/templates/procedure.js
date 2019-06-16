@@ -99,10 +99,11 @@ export const ProcedureTemplate = ({
     return (
         <section className="procedure-section">
             {helmet || ''}
-            <div className="container content">
-                <div className="columns">
+            <div className="content">
+                {/* maring issue https://github.com/jgthms/bulma/issues/449 */}
+                <div className="columns" style={{margin:0}} >
                     <div className="column is-10 is-offset-1">
-                        <div style={{margin:15}}>
+                        <div >
                             <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
                                 {title}
                             </h1>
