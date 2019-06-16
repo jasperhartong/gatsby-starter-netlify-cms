@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import Layout from '../components/Layout'
 import Content, { HTMLContent } from '../components/Content'
 import SwipeableViews from 'react-swipeable-views';
@@ -103,7 +103,7 @@ export const ProcedureTemplate = ({
                 {/* maring issue https://github.com/jgthms/bulma/issues/449 */}
                 <div className="columns" style={{margin:0}} >
                     <div className="column is-10 is-offset-1">
-                        <div >
+                        <div>
                             <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
                                 {title}
                             </h1>
@@ -152,6 +152,9 @@ const Procedure = ({ data }) => {
 
     return (
         <Layout>
+            <Link to="/" style={{marginLeft: 15}}>
+                back
+            </Link>
             <ProcedureTemplate
                 content={post.html}
                 contentComponent={HTMLContent}
